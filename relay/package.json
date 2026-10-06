@@ -1,0 +1,17 @@
+{
+  "name": "gamesocial-relay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gun.js relay for GameSocial",
+  "main": "relay.js",
+  "scripts": {
+    "start": "node relay.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "gun": "^0.2020.1240"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0910">
+<title>GameSocial</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div id="bootOverlay" class="loading-overlay">
+  <div class="boot-inner">
+    <div class="spinner"></div>
+    <p id="bootText">起動中...</p>
+  </div>
+</div>
+
+<header class="app-header">
+  <button id="homeBtn" class="app-logo" type="button">
+    <i data-ico="logo" class="app-logo-mark"></i>
+    <span class="app-logo-text">GameSocial</span>
+  </button>
+
+  <div class="app-header-right">
+    <button id="histBtn" class="btn-outline" type="button">履歴</button>
+    <button id="menuBtn" class="icon-btn" type="button" aria-label="メニュー"><i data-ico="menu"></i></button>
+  </div>
+</header>
+
+<main class="app-main">
+
+  <!-- ========== ホーム ========== -->
+  <section id="view-home" class="view is-active">
+    <div class="home">
+      <button id="filterBubble" class="bubble" type="button">
+        <span id="filterBubbleText">誰でも · ゲーム不問</span>
+      </button>
+
+      <div class="home-avatar">
+        <img id="meAvatar" alt="" src="assets/default-avatar.png">
+      </div>
+
+      <div class="home-name">
+        <span id="meName">—</span>
+        <i data-ico="verified" class="verified"></i>
+      </div>
+      <div id="meHandle" class="home-handle"></div>
+
+      <div class="home-actions">
+        <button id="startCallBtn" class="btn-big" type="button">通話を開始</button>
+        <button id="startChatBtn" class="btn-big btn-big-alt" type="button">チャットを開始</button>
+        <button id="editProfBtn" class="btn-line" type="button">プロフィールを変更</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 履歴 ========== -->
+  <section id="view-history" class="view">
+    <div class="sheet-page">
+      <h2 class="jp-title">履歴</h2>
+      <div id="histFilter" class="hist-filter"></div>
+      <ul id="histList" class="hist-list"></ul>
+      <div id="histEmpty" class="pane-empty">まだ誰ともつながっていません</div>
+    </div>
+  </section>
+
+  <!-- ========== プロフィール ========== -->
+  <section id="view-settings" class="view">
+    <div class="sheet-page">
+      <h2 class="jp-title">プロフィール</h2>
+
+      <div class="panel">
+        <div id="meCard" class="me-card"></div>
+        <p class="field-hint">名前とアイコンは X のものを使います。ここでは変更できません。</p>
+      </div>
+
+      <div class="panel">
+        <h3 class="sec-title">性別</h3>
+        <div id="myGender" class="chip-row"></div>
+        <p class="field-hint">相手の絞り込みに使われます。未設定のままでも構いません。</p>
+      </div>
+
+      <div class="panel">
+        <h3 class="sec-title">遊ぶゲーム <span id="myGameCount" class="field-count"></span></h3>
+        <div id="myGames" class="chip-row"></div>
+        <div class="row-add">
+          <input id="myGameInput" class="input" maxlength="20" placeholder="リストに無いゲームを追加">
+          <button id="myGameAdd" class="btn-line btn-line-sm" type="button">追加</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== メニュー ========== -->
+<div id="menuScrim" class="scrim"></div>
+<aside id="menuSheet" class="menu-sheet">
+  <div class="menu-head">
+    <span class="menu-title">メニュー</span>
+    <button id="menuClose" class="icon-btn" type="button" aria-label="閉じる"><i data-ico="close"></i></button>
+  </div>
+  <div id="menuRank" class="menu-rank"></div>
+  <nav class="menu-nav">
+    <button class="menu-item" data-view="home"><i data-ico="link"></i>つながる</button>
+    <button class="menu-item" data-view="history"><i data-ico="clock"></i>履歴</button>
+    <button class="menu-item" data-view="settings"><i data-ico="profile"></i>プロフィール</button>
+  </nav>
+  <button id="logoutBtn" class="btn-line btn-line-danger" type="button">ログアウト</button>
+</aside>
+
+<!-- ========== 条件 ========== -->
+<div id="filterScrim" class="scrim"></div>
+<div id="filterSheet" class="filter-sheet">
+  <div class="menu-head">
+    <span class="menu-title">つながる条件</span>
+    <button id="filterClose" class="icon-btn" type="button" aria-label="閉じる"><i data-ico="close"></i></button>
+  </div>
+  <div class="filter-body">
+    <h3 class="sec-title">性別</h3>
+    <div id="filterGender" class="chip-row"></div>
+    <h3 class="sec-title">ゲーム</h3>
+    <select id="filterGame" class="input"><option value="">こだわらない</option></select>
+  </div>
+</div>
+
+<!-- ========== 年齢の入力（ログイン後に1回だけ） ========== -->
+<div id="ageGate" class="agegate hidden">
+  <div class="agegate-inner">
+    <div class="agegate-id">
+      <img id="ageAvatar" class="agegate-av" alt="" src="assets/default-avatar.png">
+      <div class="agegate-id-meta">
+        <span id="ageName" class="agegate-name"></span>
+        <span id="ageHandle" class="agegate-handle"></span>
+        <span id="ageUserId" class="agegate-uid"></span>
+      </div>
+    </div>
+
+    <h2 class="agegate-title">パスワードを入力してください</h2>
+
+    <div class="agegate-field">
+      <input id="ageInput" class="input agegate-input" type="text" maxlength="16" placeholder="password">
+    </div>
+
+    <button id="ageSubmit" class="btn-big" type="button">決定</button>
+
+    <p class="agegate-note">
+    </p>
+  </div>
+</div>
+
+<!-- ========== 探索中 ========== -->
+<div id="searching" class="searching hidden">
+  <div class="searching-inner">
+    <div class="searching-pulse"><i data-ico="link"></i></div>
+    <span id="searchingTitle" class="searching-title">相手を探しています</span>
+    <span id="searchingMeta" class="searching-meta"></span>
+    <button id="searchCancel" class="btn-line" type="button">やめる</button>
+  </div>
+</div>
+
+<!-- ========== チャット ========== -->
+<div id="chatScreen" class="session hidden">
+  <div id="chatPeer" class="peer-bar"></div>
+  <div class="tc-recv">
+    <ul id="tcRecvLog" class="tc-log"></ul>
+    <div id="tcTyping" class="tc-typing hidden">打ち中</div>
+    <div id="tcRecvLive" class="tc-live"></div>
+  </div>
+  <div class="tc-send">
+    <ul id="tcSendLog" class="tc-log tc-log-mine"></ul>
+    <textarea id="tcInput" class="tc-input" rows="2" placeholder="打った文字がそのまま相手に流れます"></textarea>
+  </div>
+  <div class="session-actions">
+    <button id="chatEndBtn" class="btn-end" type="button">終了</button>
+  </div>
+</div>
+
+<!-- ========== 通話 ========== -->
+<div id="callScreen" class="session hidden">
+  <div id="callPeer" class="peer-bar"></div>
+  <div class="call-stage">
+    <div class="call-orb-wrap">
+      <canvas id="callLevel" class="call-level" width="260" height="260"></canvas>
+      <img id="callBigAvatar" class="call-big-avatar" alt="" src="assets/default-avatar.png">
+    </div>
+    <span id="callState" class="call-state">接続中</span>
+    <span id="callTimer" class="call-timer">0:00</span>
+  </div>
+  <div class="session-actions">
+    <button id="callMuteBtn" class="call-btn" type="button" aria-label="マイク"><i data-ico="mic"></i></button>
+    <button id="callEndBtn" class="call-btn call-btn-end" type="button" aria-label="終了"><i data-ico="phone"></i></button>
+  </div>
+  <audio id="callAudio" autoplay></audio>
+</div>
+
+<div id="rankUpOverlay" class="rankup-overlay hidden">
+  <div class="rankup-inner">
+    <span id="rankUpIcon" class="rankup-icon"></span>
+    <span class="rankup-label">RANK UP</span>
+    <span id="rankUpName" class="rankup-name"></span>
+  </div>
+</div>
+
+<div id="xpHost" class="xp-host"></div>
+<div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/sea.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/lib/webrtc.js"></script>
+
+<script src="js/icons.js"></script>
+<script src="js/core.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/gun-init.js"></script>
+<script src="js/rank.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/history.js"></script>
+<script src="js/webrtc.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/connect.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

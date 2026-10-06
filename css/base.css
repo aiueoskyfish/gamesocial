@@ -1,0 +1,297 @@
+/* ==========================================================================
+   base.css - リセット・デザイントークン（ダーク固定）
+   テーマ切り替えは廃止。配色はここ一箇所で決まる。
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+:root {
+  /* ---- 書体 ----
+     ★大髭113 はラテン文字の字形を持たない（実測でインク量 0）。
+      英数字に当てると文字が消えるため、和文見出し専用に隔離してある。 */
+
+  /* 和文の見出し。このアプリの「顔」。 */
+  --font-jp-display:
+    '大髭113',
+    'FOT-ロウディ Std EB', 'ロウディ Std EB',
+    'モッチーポップ One OTF', 'Mochiy Pop One', 'Dela Gothic One', sans-serif;
+
+  /* ラテンを含む見出し（GameSocial / MATCH / Gold など） */
+  --font-display:
+    'FOT-ロウディ Std EB', 'ロウディ Std EB', 'FOT-Rowdy Std EB',
+    'モッチーポップ One OTF', 'Mochiy Pop One', 'Dela Gothic One', sans-serif;
+
+  /* 本文・UI */
+  --font-ui:
+    'FOT-ニューロダン Pro DB', 'ニューロダン Pro DB', 'FOT-NewRodin Pro DB',
+    'FOT-ニューロダン Pro M', 'ニューロダン Pro M',
+    'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Meiryo', sans-serif;
+
+  /* 数字（タイマー / XP / 人数） */
+  --font-num:
+    'FOT-ロウディ Std EB', 'モッチーポップ One OTF', 'Mochiy Pop One', 'Dela Gothic One', sans-serif;
+
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ---- 地の色 ---- */
+  --ink-900: #0b0910;
+  --ink-800: #141120;
+  --ink-700: #1d1930;
+
+  --bg-primary: var(--ink-900);
+  --bg-surface: var(--ink-800);
+  --bg-surface-2: var(--ink-700);
+
+  /* ---- 背景の光球 ---- */
+  --glow-1: #7b4bff;
+  --glow-2: #ff4d8d;
+  --glow-3: #14c9d6;
+  --glow-4: #ffb020;
+
+  --veil-in: rgba(11, 9, 16, .38);
+  --veil-out: rgba(11, 9, 16, .84);
+
+  --accent: #8b7bff;
+  --accent-hover: #a394ff;
+  --accent-ink: #ffffff;
+
+  --text-primary: #f2effa;
+  --text-secondary: #a79fc4;
+  --text-tertiary: #6f6890;
+
+  --success: #35d6a4;
+  --danger: #ff5c72;
+  --warning: #ffb020;
+
+  /* ---- ガラス ---- */
+  --glass-tint: rgba(255, 255, 255, .085);
+  --glass-tint-strong: rgba(255, 255, 255, .14);
+  --glass-tint-deep: rgba(10, 8, 18, .42);
+  --glass-edge: rgba(255, 255, 255, .16);
+  --glass-edge-strong: rgba(255, 255, 255, .26);
+  --glass-spec: rgba(255, 255, 255, .55);
+  --glass-inner: rgba(0, 0, 0, .30);
+  --glass-blur: 28px;
+  --glass-blur-sm: 14px;
+  --glass-sat: 180%;
+
+  --border: rgba(255, 255, 255, .10);
+
+  /* 角丸を捨てた分、立体感は影だけで作る。
+     面を浮かせるために、密着した影と遠くに落ちる影を必ず重ねる。 */
+  --depth-1: 0 1px 1px rgba(0,0,0,.34), 0 3px 10px rgba(0,0,0,.30);
+  --depth-2: 0 2px 2px rgba(0,0,0,.36), 0 10px 28px rgba(0,0,0,.44);
+  --depth-3: 0 4px 6px rgba(0,0,0,.40), 0 26px 70px rgba(0,0,0,.58);
+  --depth-4: 0 8px 10px rgba(0,0,0,.44), 0 48px 120px rgba(0,0,0,.66);
+  --shadow: var(--depth-2);
+  --shadow-sm: var(--depth-1);
+
+  /* 角丸は全廃。円形が必要な箇所だけ個別に 50% を指定する。 */
+  --r-xs: 0px;
+  --r-sm: 0px;
+  --r: 0px;
+  --r-lg: 0px;
+  --r-xl: 0px;
+  --r-pill: 0px;
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
+
+  --header-height: 64px;
+  --bottomnav-height: 72px;
+  --sidebar-width: 244px;
+
+  --ease-gel: cubic-bezier(.32, .72, 0, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --transition-fast: .18s var(--ease-out);
+  --transition-mid: .34s var(--ease-gel);
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font-ui);
+  font-feature-settings: 'palt' 1;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: .01em;
+  min-width: 320px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  touch-action: manipulation;
+}
+
+/* 光球。ぼかしは球だけにかけたいので html 側に置く。
+   なめらかなグラデーションを背景にすると backdrop-filter でぼかしても
+   同じ見た目にしかならず、ガラスが「ただの半透明の板」になる。
+   輪郭のある円を置いてからぼかすことで、ガラス越しに色が混ざる。 */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 150px at 25% 29%, var(--glow-1) 0 100%, transparent 100%),
+    radial-gradient(circle 120px at 93% 19%, var(--glow-2) 0 100%, transparent 100%),
+    radial-gradient(circle 165px at 81% 83%, var(--glow-3) 0 100%, transparent 100%),
+    radial-gradient(circle 105px at 29% 83%, var(--glow-4) 0 100%, transparent 100%),
+    radial-gradient(circle 130px at 56% 46%, var(--glow-1) 0 100%, transparent 100%);
+  filter: blur(34px) saturate(125%);
+  opacity: .45;
+  animation: auroraDrift 38s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes auroraDrift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  50%  { transform: translate3d(2.5%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-2%, 2.5%, 0) scale(1.03); }
+}
+
+/* 暗幕。色は残したまま文字のコントラストを確保する */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background: radial-gradient(75% 65% at 50% 45%, var(--veil-in), var(--veil-out));
+}
+
+/* フィルムグレイン。これが無いとどれだけ重ねても CG っぽい平板さが残る */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .32;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+button, input, textarea, select {
+  font: inherit;
+  font-family: var(--font-ui);
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+ul, ol { list-style: none; }
+
+:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 2px; }
+::selection { background: color-mix(in oklab, var(--accent) 55%, transparent); color: #fff; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.10);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--r-pill);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); background-clip: content-box; }
+
+/* ==========================================================================
+   ガラス素材
+   ========================================================================== */
+
+.glass {
+  position: relative;
+  background: var(--glass-tint);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-spec),
+    inset 0 -1px 0 var(--glass-inner),
+    var(--depth-2);
+}
+
+/* 縁の鏡面反射。上は明るく下はほぼ消える＝厚みのあるガラス */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg,
+    var(--glass-edge-strong) 0%, transparent 38%,
+    transparent 62%, rgba(255,255,255,.10) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glass { background: rgba(20, 17, 32, .92); }
+}
+
+.hidden { display: none !important; }
+
+.spinner {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0%, var(--accent) 85%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  z-index: 9999;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.ico {
+  width: 1.25em;
+  height: 1.25em;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ico-fill { fill: currentColor; stroke: none; }

@@ -1,0 +1,6 @@
+name = "gamesocial-auth"
+main = "oauth-worker.js"
+compatibility_date = "2026-01-01"
+
+# このWorkerは KV / D1 / Durable Objects を一切使いません。
+# 無料枠（10万リクエスト/日）だけで動き、課金要素はありません。
